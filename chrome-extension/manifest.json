@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Local E5 Embeddings (WASM)",
+  "description": "Runs intfloat/e5-small-v2 embedding inference fully in Chrome with Candle + WebAssembly.",
+  "version": "0.1.0",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "pkg/*",
+        "model/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
