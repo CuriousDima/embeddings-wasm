@@ -1,24 +1,24 @@
-# e5-wasm (Candle + Chrome Extension)
+# e5-wasm (Candle + Browser App)
 
-This project runs **`intfloat/e5-small-v2`** embedding inference fully local in Chrome:
+This project runs **`intfloat/e5-small-v2`** embedding inference fully local in a small browser app:
 
 - Rust inference engine built with HuggingFace **Candle**.
 - Compiled to **WebAssembly** via `wasm-pack`.
-- Loaded from a Chrome extension popup using Chrome APIs (`chrome.runtime.getURL`).
-- Model + tokenizer are loaded locally from extension-packaged files (`model/*`).
+- Loaded from a simple static HTML/JS app in `web-app/`.
+- Model + tokenizer are loaded locally from `web-app/model/*` over HTTP.
 
 ## 1) Build WASM
 
 ```bash
 rustup target add wasm32-unknown-unknown
 cargo install wasm-pack
-wasm-pack build --target web --release --out-dir chrome-extension/pkg
+wasm-pack build --target web --release --out-dir web-app/pkg
 ```
 
-## 2) Download the E5-small-v2 files
+## 2) Download E5-small-v2 model files
 
 ```bash
-./scripts/download_e5_small_v2.sh chrome-extension/model
+./scripts/download_e5_small_v2.sh web-app/model
 ```
 
 This downloads:
@@ -27,29 +27,13 @@ This downloads:
 - `tokenizer.json`
 - `model.safetensors`
 
-## 3) Load in Chrome
+## 3) Serve the app (Python HTTP)
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select `chrome-extension/`
-5. Open the extension popup and click **Generate embedding**
+```bash
+python3 scripts/serve_web_app.py
+```
 
-## How Chrome APIs are used
-
-`chrome-extension/popup.js` uses:
-
-- `chrome.runtime.getURL("pkg/e5_wasm.js")` to load the generated JS/WASM wrapper.
-- `chrome.runtime.getURL("pkg/e5_wasm_bg.wasm")` to initialize WASM bytes.
-- `chrome.runtime.getURL("model")` as the base path for local model files.
-
-Inside WASM, Rust calls browser `fetch` (`web-sys`) to load:
-
-- `model/config.json`
-- `model/tokenizer.json`
-- `model/model.safetensors`
-
-No server-side inference is required.
+Then open: <http://127.0.0.1:8000>
 
 ## Rust API
 

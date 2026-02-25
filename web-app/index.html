@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>E5 WASM App</title>
+    <style>
+      body { font-family: sans-serif; max-width: 760px; margin: 24px auto; padding: 0 16px; }
+      textarea { width: 100%; min-height: 96px; }
+      button { margin-top: 8px; }
+      pre { white-space: pre-wrap; font-size: 12px; max-height: 360px; overflow: auto; background: #f7f7f7; padding: 12px; border-radius: 8px; }
+      .muted { color: #555; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>E5 Small v2 Embeddings</h1>
+    <p class="muted">All inference runs locally in your browser through WebAssembly.</p>
+    <textarea id="input">What is a good way to learn Rust for machine learning?</textarea>
+    <div>
+      <button id="run">Generate embedding</button>
+    </div>
+    <pre id="output">Loading...</pre>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
