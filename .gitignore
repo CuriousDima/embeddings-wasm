@@ -1,0 +1,4 @@
+/target
+chrome-extension/pkg
+chrome-extension/model
+wasm-pack.log
